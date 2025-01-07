@@ -1,7 +1,7 @@
 import { ContextButton } from "@/components/ContextButton";
 import { FokusButton } from "@/components/FokusButton";
 import { Timer } from "@/components/Timer";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 const pomodoro = [
@@ -35,19 +35,40 @@ export interface IContext {
 export default function Index() {
 
   const [context, setContext] = useState(pomodoro[0])
-  const [timer, setTimer] = useState<boolean>(false)
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [seconds, setSeconds] = useState(pomodoro[0].initialValue)
+
   const handleContextChange = (newContext: IContext) => {
     setContext(newContext);
+    setSeconds(newContext.initialValue)
   };
 
-  function toogleTimer () {
-    if (timer) {
-      setTimer(false)
-    } else {
-      setTimer(true)
+  function clear() {
+    if (timerRef.current != null) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
     }
   }
-  
+
+  function toogleTimer() {
+    if (timerRef.current) {
+      clear()
+      return
+    }
+    const id = setInterval(() => {
+      setSeconds((oldValue) => {
+        if (oldValue === 0) {
+          clear();
+          setSeconds(context.initialValue);
+          return context.initialValue;
+        }
+        return oldValue - 1;
+      });
+    }, 1000);
+    timerRef.current = id; 
+  }
+
   return (
     <View
       style={styles.background}
@@ -55,15 +76,15 @@ export default function Index() {
       <Image source={context.image} />
       <View style={styles.actions}>
         <View style={styles.context}>
-          {pomodoro.map((item) => (<ContextButton 
+          {pomodoro.map((item) => (<ContextButton
             key={item.id}
             active={item.id === context.id}
             onPress={handleContextChange}
             item={item}
           />))}
         </View>
-        <Timer time={context.initialValue} />
-        <FokusButton title={timer ? 'Pausar' : 'Começar'} onPress={toogleTimer}/>
+        <Timer time={seconds} />
+        <FokusButton title={timerRef.current ? 'Pausar' : 'Começar'} onPress={toogleTimer} />
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
