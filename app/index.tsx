@@ -1,3 +1,4 @@
+import { StartButton } from "@/components/StartButton";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -58,11 +59,7 @@ export default function Index() {
         <Text style={styles.timer}>
           {new Date(context.initialValue * 1000).toLocaleTimeString('pt-Br', { minute: '2-digit', second: '2-digit' })}
         </Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>
-            Começar
-          </Text>
-        </Pressable>
+        <StartButton />
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
@@ -109,19 +106,6 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 54,
     textAlign: 'center'
-  },
-  button: {
-    backgroundColor: '#B872FF',
-    width: '100%',
-    borderRadius: 35,
-    padding: 8,
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#021123',
-    fontSize: 18,
-    fontWeight: 500,
-    lineHeight: 27
   },
   footer: {
     width: '80%',
