@@ -1,3 +1,4 @@
+import { ContextButton } from "@/components/ContextButton";
 import { StartButton } from "@/components/StartButton";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -23,7 +24,7 @@ const pomodoro = [
   }
 ]
 
-interface IContext {
+export interface IContext {
   id: string
   initialValue: number
   image: NodeRequire
@@ -44,17 +45,12 @@ export default function Index() {
       <Image source={context.image} />
       <View style={styles.actions}>
         <View style={styles.context}>
-          {pomodoro.map((item) => (<Pressable
+          {pomodoro.map((item) => (<ContextButton 
             key={item.id}
-            style={[
-              item.id === context.id ? styles.contextButtonActive : null
-            ]}
-            onPress={() => handleContextChange(item)}
-          >
-            <Text style={styles.contextButtonText}>
-              {item.display}
-            </Text>
-          </Pressable>))}
+            active={item.id === context.id}
+            onPress={handleContextChange}
+            item={item}
+          />))}
         </View>
         <Text style={styles.timer}>
           {new Date(context.initialValue * 1000).toLocaleTimeString('pt-Br', { minute: '2-digit', second: '2-digit' })}
