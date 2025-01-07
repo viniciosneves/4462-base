@@ -1,5 +1,6 @@
 import { ContextButton } from "@/components/ContextButton";
 import { StartButton } from "@/components/StartButton";
+import { Timer } from "@/components/Timer";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -52,9 +53,7 @@ export default function Index() {
             item={item}
           />))}
         </View>
-        <Text style={styles.timer}>
-          {new Date(context.initialValue * 1000).toLocaleTimeString('pt-Br', { minute: '2-digit', second: '2-digit' })}
-        </Text>
+        <Timer time={context.initialValue} />
         <StartButton />
       </View>
       <View style={styles.footer}>
@@ -79,15 +78,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center'
   },
-  contextButtonActive: {
-    backgroundColor: '#144480',
-    borderRadius: 8,
-  },
-  contextButtonText: {
-    padding: 8,
-    color: '#FFF',
-    fontSize: 13
-  },
   actions: {
     paddingHorizontal: 20,
     paddingVertical: 24,
@@ -97,11 +87,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#144480',
     gap: 32,
-  },
-  timer: {
-    color: '#FFF',
-    fontSize: 54,
-    textAlign: 'center'
   },
   footer: {
     width: '80%',
