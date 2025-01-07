@@ -1,5 +1,5 @@
 import { ContextButton } from "@/components/ContextButton";
-import { StartButton } from "@/components/StartButton";
+import { FokusButton } from "@/components/FokusButton";
 import { Timer } from "@/components/Timer";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -35,9 +35,18 @@ export interface IContext {
 export default function Index() {
 
   const [context, setContext] = useState(pomodoro[0])
+  const [timer, setTimer] = useState<boolean>(false)
   const handleContextChange = (newContext: IContext) => {
     setContext(newContext);
   };
+
+  function toogleTimer () {
+    if (timer) {
+      setTimer(false)
+    } else {
+      setTimer(true)
+    }
+  }
   
   return (
     <View
@@ -54,7 +63,7 @@ export default function Index() {
           />))}
         </View>
         <Timer time={context.initialValue} />
-        <StartButton />
+        <FokusButton title={timer ? 'Pausar' : 'Começar'} onPress={toogleTimer}/>
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
