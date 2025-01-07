@@ -5,60 +5,68 @@ const pomodoro = [
   {
     id: 'focus',
     initialValue: 25,
-    image: require('./pomodoro.png')
+    image: require('./pomodoro.png'),
+    display: 'Foco'
   },
   {
     id: 'short',
     initialValue: 5,
-    image: require('./short.png')
+    image: require('./short.png'),
+    display: 'Pausa curta'
   },
   {
     id: 'long',
     initialValue: 15,
-    image: require('./long.png')
+    image: require('./long.png'),
+    display: 'Pausa longa'
   }
 ]
 
+interface IContext {
+  id: string
+  initialValue: number
+  image: NodeRequire
+  display: string
+}
 
 export default function Index() {
 
   const [context, setContext] = useState(pomodoro[0])
-
+  const handleContextChange = (newContext: IContext) => {
+    setContext(newContext);
+  };
+  
   return (
     <View
       style={styles.background}
     >
-      <Image source={context.image}/>
+      <Image source={context.image} />
       <View style={styles.actions}>
         <View style={styles.context}>
-          <Pressable style={styles.contextButtonActive}>
+          {pomodoro.map((item) => (<Pressable
+            key={item.id}
+            style={[
+              item.id === context.id ? styles.contextButtonActive : null
+            ]}
+            onPress={() => handleContextChange(item)}
+          >
             <Text style={styles.contextButtonText}>
-              Foco
+              {item.display}
             </Text>
-          </Pressable>
-          <Pressable>
-            <Text style={styles.contextButtonText}>
-              Pausa curta
-            </Text>
-          </Pressable>
-          <Pressable>
-            <Text style={styles.contextButtonText}>
-              Pausa longa
-            </Text>
-          </Pressable>
+          </Pressable>))}
         </View>
         <Text style={styles.timer}>
-          {new Date(context.initialValue * 1000).toLocaleTimeString('pt-Br', {minute: '2-digit', second: '2-digit'})}
+          {new Date(context.initialValue * 1000).toLocaleTimeString('pt-Br', { minute: '2-digit', second: '2-digit' })}
         </Text>
         <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>
-              Começar
-            </Text>
+          <Text style={styles.buttonText}>
+            Começar
+          </Text>
         </Pressable>
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          Projeto fictício e sem fins comerciais. Desenvolvido por Alura. 
+          Projeto fictício e sem fins comerciais. Desenvolvido por Alura.
         </Text>
       </View>
     </View>
@@ -81,9 +89,9 @@ const styles = StyleSheet.create({
   contextButtonActive: {
     backgroundColor: '#144480',
     borderRadius: 8,
-    padding: 8
   },
   contextButtonText: {
+    padding: 8,
     color: '#FFF',
     fontSize: 13
   },
