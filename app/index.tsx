@@ -7,6 +7,23 @@ export default function Index() {
     >
       <Image source={require('./pomodoro.png')}/>
       <View style={styles.actions}>
+        <View style={styles.context}>
+          <Pressable style={styles.contextButtonActive}>
+            <Text style={styles.contextButtonText}>
+              Foco
+            </Text>
+          </Pressable>
+          <Pressable>
+            <Text style={styles.contextButtonText}>
+              Pausa curta
+            </Text>
+          </Pressable>
+          <Pressable>
+            <Text style={styles.contextButtonText}>
+              Pausa longa
+            </Text>
+          </Pressable>
+        </View>
         <Text style={styles.timer}>
           25:00
         </Text>
@@ -30,8 +47,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#01080E',
+    backgroundColor: '#021123',
     gap: 40
+  },
+  context: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  contextButtonActive: {
+    backgroundColor: '#144480',
+    borderRadius: 8,
+    padding: 8
+  },
+  contextButtonText: {
+    color: '#FFF',
+    fontSize: 13
   },
   actions: {
     paddingHorizontal: 20,
@@ -56,7 +87,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: '#FFF',
+    color: '#021123',
     fontSize: 18,
     fontWeight: 500,
     lineHeight: 27
