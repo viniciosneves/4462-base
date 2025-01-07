@@ -1,5 +1,6 @@
 import { ContextButton } from "@/components/ContextButton";
 import { FokusButton } from "@/components/FokusButton";
+import { IconPause, IconPlay } from "@/components/Icons";
 import { Timer } from "@/components/Timer";
 import { useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -35,10 +36,11 @@ export interface IContext {
 export default function Index() {
 
   const [context, setContext] = useState(pomodoro[0])
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
+  const [timerRuning, setTimerRuning] = useState<boolean>(false)
   const [seconds, setSeconds] = useState(pomodoro[0].initialValue)
-
+  
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  
   const handleContextChange = (newContext: IContext) => {
     setContext(newContext);
     setSeconds(newContext.initialValue)
@@ -48,6 +50,7 @@ export default function Index() {
     if (timerRef.current != null) {
       clearInterval(timerRef.current);
       timerRef.current = null;
+      setTimerRuning(false)
     }
   }
 
@@ -56,6 +59,7 @@ export default function Index() {
       clear()
       return
     }
+    setTimerRuning(true)
     const id = setInterval(() => {
       setSeconds((oldValue) => {
         if (oldValue === 0) {
@@ -84,7 +88,11 @@ export default function Index() {
           />))}
         </View>
         <Timer time={seconds} />
-        <FokusButton title={timerRef.current ? 'Pausar' : 'Começar'} onPress={toogleTimer} />
+        <FokusButton 
+          title={(timerRuning) ? 'Pausar' : 'Começar'} 
+          icon={(timerRuning) ? <IconPause /> : <IconPlay />} 
+          onPress={toogleTimer} 
+        />
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
